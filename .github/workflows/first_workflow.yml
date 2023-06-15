@@ -29,6 +29,10 @@ jobs:
         with:
           name: devopsLab
           path: main.py
+          
+      - name: Mypy action
+        uses: sasanquaneuf/mypy-github-action@releases/v1.3
+        
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
