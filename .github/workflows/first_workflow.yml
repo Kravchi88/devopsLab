@@ -1,6 +1,8 @@
 name: first_worlflow
 on:
   push:
+    paths:
+      - '*.py'
   workflow_dispatch:
 
 
@@ -29,10 +31,26 @@ jobs:
         with:
           name: devopsLab
           path: main.py
-          
-      - name: Mypy action
-        uses: sasanquaneuf/mypy-github-action@releases/v1.3
-        
+  
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.10
+          architecture: x64
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install mypy
+        run: pip install mypy
+      - name: Run mypy
+        uses: sasanquaneuf/mypy-github-action@releases/v1
+        with:
+          checkName: 'mypy'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
